@@ -1,36 +1,33 @@
-import { API, container, FormLogin } from "./config/config.js";
-import { showToast } from "./config/showToast.js";
-
-container.innerHTML = FormLogin
-
-async function main() {
-    const form = document.querySelector(".login-form")
-
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault()
-
-        const username = document.getElementById("username").value
-        const password = document.getElementById("password").value
-        
-
-        const credentials = btoa(`${username}:${password}`)
-
-        const response = await fetch(API, {
+import { APIGraphql } from "./config/config.js";
+import { login } from "./pages/Login.js";
+async function checkJWT() {
+    const token = localStorage.getItem("token")
+    if (!token) {
+        return login()
+    }
+    try {
+        const response = await fetch(APIGraphql, {
             method: "POST",
             headers: {
-                "Authorization": `Basic ${credentials}`
-            }
+                "Content-Type": "application/json",
+                "Authorization": `Basic ${token}`
+            },
+            body: JSON.stringify({
+                query: `
+                  query {
+                    user {
+                      id
+                    }
+                  }
+                `
+            })
         })
-
         const data = await response.json()
+        console.log(data);
 
-        if (response.ok) {
-            showToast("green","Login success")
-            localStorage.setItem("token",data)
-        } else {
-            showToast("red",data.message)
-        }
-    })
+    } catch (error) {
+
+    }
 }
 
-main()
+checkJWT()
