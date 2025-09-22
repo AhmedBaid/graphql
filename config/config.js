@@ -9,3 +9,5 @@ export const FormLogin = `
             </form>
     </div>
 `
+export const errorDiv = document.querySelector(".error")
+export const API = "https://learn.zone01oujda.ma/api/auth/signin"
