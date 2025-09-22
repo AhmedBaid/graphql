@@ -1,10 +1,11 @@
-import { container } from "../config/config"
-import { showToast } from "../config/showToast"
-import { showProfile } from "./showProfile"
+import { APISingIn, container, FormLogin } from "../config/config.js"
+import { showToast } from "../config/showToast.js"
+import { showProfile } from "./showProfile.js"
 
-container.innerHTML = FormLogin
 
 export async function login() {
+    container.innerHTML = FormLogin
+
     const form = document.querySelector(".login-form")
 
     form.addEventListener("submit", async (e) => {
@@ -16,7 +17,7 @@ export async function login() {
 
         const credentials = btoa(`${username}:${password}`)
 
-        const response = await fetch(API, {
+        const response = await fetch(APISingIn, {
             method: "POST",
             headers: {
                 "Authorization": `Basic ${credentials}`
@@ -28,7 +29,7 @@ export async function login() {
         if (response.ok) {
             showToast("green", "Login success")
             localStorage.setItem("token", data)
-            showProfile()
+            showProfile(data)
         } else {
             showToast("red", "invalid credentials")
         }
