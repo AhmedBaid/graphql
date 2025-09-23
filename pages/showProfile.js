@@ -62,6 +62,13 @@ export async function showProfile(token) {
               }
             }
           }
+          groups:transaction_aggregate(
+            where: { type: { _eq: "level" }, event: { object: { name: { _eq: "Module" } } } }
+          ) {
+            aggregate {
+              count
+            }
+          }
         }
       `
     })
@@ -101,3 +108,137 @@ export async function showProfile(token) {
     logout();
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { APIGraphql, container, logout } from "../config/config.js";
+
+// // Format XP into kb/mb
+// function formatXP(xp) {
+//   if (!xp) return "0 kb";
+//   if (xp < 1_000_000) return `${(xp / 1000).toFixed(1)} kb`;
+//   return `${(xp / 1_000_000).toFixed(2)} mb`;
+// }
+
+// export async function showProfile(token) {
+//   // 1. Query user + groups + xp_view
+//   const response = await fetch(APIGraphql, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "Authorization": `Bearer ${token}`
+//     },
+//     body: JSON.stringify({
+//       query: `
+//         query {
+//           user {
+//             id
+//             firstName
+//             lastName
+//             groups(
+//               where: {
+//                 group: { status: { _eq: finished }, _and: { eventId: { _eq: 41 } } }
+//               }
+//             ) {
+//               group {
+//                 id
+//                 path
+//                 members { userLogin }
+//               }
+//             }
+//           }
+//           xp_view {
+//             amount
+//             path
+//             userId
+//           }
+//         }
+//       `
+//     })
+//   });
+
+//   const data = await response.json();
+//   console.log("Profile data:", data);
+
+//   const user = data.data.user[0];
+//   const firstName = user.firstName;
+//   const lastName = user.lastName;
+//   const groups = user.groups || [];
+//   const xpView = data.data.xp_view || [];
+
+//   // 2. نربط projects مع XP
+//   const xpResults = groups.map(g => {
+//     const projectXP = xpView
+//       .filter(x => x.path === g.group.path && x.userId === user.id)
+//       .reduce((sum, x) => sum + x.amount, 0);
+
+//     return {
+//       path: g.group.path,
+//       xp: projectXP,
+//       members: g.group.members
+//     };
+//   });
+
+//   // 3. عدد المشاريع
+//   const completedProjects = xpResults.length;
+
+//   // 4. UI
+//   container.innerHTML = `
+//     <div class="header">
+//       <h1 class="logo">Welcome, ${firstName} ${lastName}</h1>
+//       <button id="logoutBtn">Logout</button>
+//     </div>
+
+//     <div class="stats">
+//       <div class="stat-card">
+//         <h3>Completed Projects</h3>
+//         <p>${completedProjects}</p>
+//       </div>
+//     </div>
+
+//     <div class="projects">
+//       <h2>Projects XP Overview</h2>
+//       <table class="project-table">
+//         <thead>
+//           <tr>
+//             <th>Project</th>
+//             <th>XP</th>
+//             <th>Members</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           ${xpResults.map(p => `
+//             <tr>
+//               <td>${p.path}</td>
+//               <td>${formatXP(p.xp)}</td>
+//               <td>${p.members.map(m => m.userLogin).join(", ")}</td>
+//             </tr>
+//           `).join("")}
+//         </tbody>
+//       </table>
+//     </div>
+//   `;
+
+//   // 5. Logout btn
+//   const logoutBtn = document.getElementById("logoutBtn");
+//   logoutBtn.addEventListener("click", () => {
+//     logout();
+//   });
+// }
