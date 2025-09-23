@@ -6,8 +6,10 @@
 }
 
 body {
-  background-color: #0a0a0ade;
+    background-color: #0a0a0ade;
 }
+
+
 
 .header {
     position: fixed;
@@ -24,27 +26,36 @@ body {
 
 #logoutBtn {
     height: 40px;
-    width: 100px;
+    width: 120px;
     border-radius: 12px;
     border: none;
     outline: none;
     cursor: pointer;
-    background-color: #1ecc7b;
-    box-shadow: 2px 2px 10px #04E17A;
+    background: linear-gradient(135deg, #f97316, #f43f5e);
+    box-shadow: 2px 2px 5px #f97316;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
+.firstLast {
+background: linear-gradient(90deg, #28d383, #00ff26);
+  -webkit-background-clip: text;   /* Safari/Chrome */
+  -webkit-text-fill-color: transparent;
+  background-clip: text;           /* Standard */
+  color: transparent;    font-size: 24px;
     font-weight: bold;
 }
 .logo{
-    color: #04E17A;
+    color: white;
     font-size: 24px;
     font-weight: bold;
 }
-#main {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 
 .logg {
     margin-bottom: 40px;
@@ -123,23 +134,36 @@ select:focus {
 }
 
 
-
-
-
-.stat-card {
-    background: #1e1e1e;
-    border-left: 2px solid #ff5500;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 10px;
-    display: inline-block;
-    width: 200px;
-    color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 .stats {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-} 
+    justify-content: center;
+    gap: 70px;
+    margin-top: 100px;
+}
+
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #1e1e1e;
+    border-left: 2px solid #04E17A;
+    padding: 30px;
+    border-radius: 8px;
+    margin: 10px;
+    width: 320px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.stat-card h3 {
+    width: fit-content;
+    margin-bottom: 25px;
+    font-size: 20px;
+    color: #04E17A;
+    border-bottom: 2px solid #04E17A;
+}
+.stat-card p {
+    font-size: 24px;
+    font-weight: bold;
+}
