@@ -1,19 +1,36 @@
-import { container } from "../config/config.js";
-import { login } from "./login.js";
+import { APIGraphql, container, logout } from "../config/config.js";
 
-export function showProfile(data) {
-    const username = data?.data?.user?.login
+export async function showProfile(token) {   
+
+    const response = await fetch(APIGraphql, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            query: `
+              query {
+                  user {
+                      login
+                  }
+              }
+            `
+        })
+    });
+
+    const data = await response.json();
+    
+    const username = data.data.user[0].login
+    
     container.innerHTML = `
-        <div>
+        <div class="header">
             <h1>Welcome ${username}</h1>
             <button id="logoutBtn">Logout</button>
         </div>
     `;
-
-    // Logout handler
-    const logoutBtn = document.getElementById("logoutBtn");
+     const logoutBtn = document.getElementById("logoutBtn");
     logoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("token");
-        login()
+        logout()
     });
 }

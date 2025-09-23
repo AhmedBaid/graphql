@@ -1,3 +1,5 @@
+import { login } from "../pages/login.js"
+
 export const APISingIn = 'https://learn.zone01oujda.ma/api/auth/signin'
 export const APIGraphql= 'https://learn.zone01oujda.ma/api/graphql-engine/v1/graphql'
 export const container = document.getElementById('main')
@@ -12,3 +14,7 @@ export const FormLogin = `
             </form>
     </div>
 `
+export function logout() {
+    localStorage.removeItem("token")
+    login()
+}

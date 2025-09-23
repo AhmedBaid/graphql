@@ -3,9 +3,10 @@ import { login } from "./pages/login.js";
 import { showProfile } from "./pages/showProfile.js";
 
 async function checkJWT() {
-  const token = localStorage.getItem("token");
-  if (!token) return login();
-
+  const token = localStorage.getItem("token")
+  if (!token) {
+    return login()
+  }
   const response = await fetch(APIGraphql, {
     method: "POST",
     headers: {
@@ -14,24 +15,27 @@ async function checkJWT() {
     },
     body: JSON.stringify({
       query: `
-              query {
-                  user {
-                      login
-                  }
-              }
-            `
+          query {
+            user {
+              login
+            }
+          }
+        `
     })
-  });
+  })
 
-  const data = await response.json();
+  const data = await response.json()
 
-  if (data) {
-    return showProfile(data);
+
+  if (response.ok && data.data?.user) {
+    return showProfile(token)
   } else {
-    localStorage.removeItem("token");
-    return login();
+    localStorage.removeItem("token")
+    return login()
   }
 
+
 }
+
 
 window.addEventListener("DOMContentLoaded", checkJWT);

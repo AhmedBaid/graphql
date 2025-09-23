@@ -24,12 +24,11 @@ export async function login() {
             }
         });
 
+        const token = await response.json();
         if (response.ok) {
-            const data = await response.json();
-            const token = data;
             localStorage.setItem("token", token);
             showToast("green", "Login success");
-            showProfile({ data: { user: { login: username } } }); // show profile
+            showProfile(token);
         } else {
             showToast("red", "Invalid credentials");
         }

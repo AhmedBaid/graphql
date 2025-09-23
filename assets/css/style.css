@@ -9,6 +9,26 @@ body {
     background-color: #003044;
 }
 
+.header{
+    position: fixed;
+    top: 0;
+    height: 70px;
+    background-color: #035f86;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 100px;
+}
+#logoutBtn{
+    height: 40px;
+    width: 100px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: #1ecc7b;
+    box-shadow: 2px 2px 10px #04E17A;
+}
 #main {
     height: 100vh;
     display: flex;
