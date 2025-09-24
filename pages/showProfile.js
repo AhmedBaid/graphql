@@ -62,13 +62,6 @@ export async function showProfile(token) {
               }
             }
           }
-          groups:transaction_aggregate(
-            where: { type: { _eq: "level" }, event: { object: { name: { _eq: "Module" } } } }
-          ) {
-            aggregate {
-              count
-            }
-          }
         }
       `
     })
