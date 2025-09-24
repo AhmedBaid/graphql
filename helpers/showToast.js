@@ -1,4 +1,4 @@
-import { errorDiv } from "./config.js";
+import { errorDiv } from "../config/config.js";
 
 export function showToast(color, message) {
     errorDiv.style.display = "block"

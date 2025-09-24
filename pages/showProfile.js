@@ -1,79 +1,21 @@
-import { APIGraphql, container, logout } from "../config/config.js";
-
-function formatXP(xp) {
-  if (!xp) return "0 kb";
-
-  if (xp.toString().length <= 6) {
-    return `${(xp / 1000).toFixed(2)} KB`;
-  } else {
-    return `${(xp / 1000000).toFixed(2)} MB`;
-  }
-}
-
-function getRank(level) {
-  if (level >= 0 && level < 10) {
-    return "Aspiring developer";
-  } else if (level >= 10 && level < 20) {
-    return "Beginner developer";
-  } else if (level >= 20 && level < 30) {
-    return "Apprentice developer";
-  } else if (level >= 30 && level < 40) {
-    return "Assistant developer";
-  } else if (level >= 40 && level < 50) {
-    return "Basic developer";
-  } else if (level >= 50 && level < 55) {
-    return "Junior developer";
-  } else if (level >= 55 && level < 60) {
-    return "Full-Stack developer";
-  } else {
-    return "";
-  }
-}
+import { container, logout } from "../config/config.js";
+import { FetchGraphqlapi } from "../helpers/FetchApi.js";
+import { project_info, user_info } from "../query/query.js";
+import { getRank } from "../helpers/GetRank.js";
+import { formatXP } from "../helpers/FormatXp.js";
 
 export async function showProfile(token) {
-  const response = await fetch(APIGraphql, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-    },
-    body: JSON.stringify({
-      query: `
-        query {
-          user {
-            firstName
-            lastName
-          }
-          xp: transaction_aggregate(
-            where: { type: { _eq: "xp" }, event: { object: { name: { _eq: "Module" } } } }
-          ) {
-            aggregate {
-              sum {
-                amount
-              }
-            }
-          }
-          level: transaction_aggregate(
-            where: { type: { _eq: "level" }, event: { object: { name: { _eq: "Module" } } } }
-          ) {
-            aggregate {
-              max {
-                amount
-              }
-            }
-          }
-        }
-      `
-    })
-  });
 
-  const data = await response.json();
-  console.log("Profile data:", data);
+  const Profile_data = await FetchGraphqlapi(user_info, token);
+  const Project_data = await FetchGraphqlapi(project_info, token);
+  console.log("Profile data:", Project_data);
 
-  const firstName = data.data.user[0].firstName;
-  const lastName = data.data.user[0].lastName;
-  const totalXP = data.data.xp.aggregate.sum.amount;
-  const level = data.data.level.aggregate.max.amount;
+  const firstName = Profile_data.data.user[0].firstName || "user";
+  const lastName = Profile_data.data.user[0].lastName || "user";
+  const totalXP = Profile_data.data.xp.aggregate.sum.amount || 0;
+  const level = Profile_data.data.level.aggregate.max.amount || 0;
+  const cohort = Profile_data.data.user[0].events[0].cohorts[0].labelName || "cohort not found";
+  const completedProjects = Project_data.data.user[0].groups.length || 0;
 
   container.innerHTML = `
     <div class="header">
@@ -86,12 +28,48 @@ export async function showProfile(token) {
         <p>${level}</p>
       </div>
       <div class="stat-card">
+        <h3>Total XP</h3>
+        <p>${formatXP(totalXP)}</p>
+      </div>
+      <div class="stat-card">
         <h3>Current Rank</h3>
         <p>${getRank(level)}</p>
       </div>
       <div class="stat-card">
-        <h3>Total XP</h3>
-        <p>${formatXP(totalXP)}</p>
+        <h3>Your cohort</h3>
+        <p>${cohort}</p>
+      </div>
+    </div>
+    <div class="projects">
+      <div class="stat-card">
+          <h3>Completed Projects</h3>
+          <p>${completedProjects}</p>
+      </div>
+      <div class="project-table-container">
+        <h2>Projects XP Overview</h2>
+        <table class="project-table">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>XP</th>
+              <th>Members</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${Project_data.data.user[0].groups.map(g => {
+              const projectXP = Project_data.data.xp_view
+                .filter(x => x.path === g.group.path && x.userId === Project_data.data.user[0].id)
+                .reduce((sum, x) => sum + x.amount, 0);
+              return `
+                <tr>
+                  <td>${g.group.path}</td>
+                  <td>${formatXP(projectXP)}</td>
+                  <td>${g.group.members.map(m => m.userLogin).join(", ")}</td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
       </div>
     </div>
   `;

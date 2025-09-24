@@ -1,4 +1,4 @@
-import { APIGraphql } from "./config/config.js";
+import { APIGraphql, logout } from "./config/config.js";
 import { login } from "./pages/login.js";
 import { showProfile } from "./pages/showProfile.js";
 
@@ -30,8 +30,7 @@ async function checkJWT() {
   if (response.ok && data.data?.user) {
     return showProfile(token)
   } else {
-    localStorage.removeItem("token")
-    return login()
+    return logout()
   }
 
 
