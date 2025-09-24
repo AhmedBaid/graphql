@@ -5,18 +5,20 @@
     box-sizing: border-box;
 }
 
+
 body {
     background-color: #0a0a0ade;
 }
 
 *::-webkit-scrollbar {
     width: 6px;
-
 }
+
 *::-webkit-scrollbar-thumb {
     background: #00ff26;
     border-radius: 10px;
 }
+
 *::-webkit-scrollbar-track {
     background: #0a0a0ade;
 }
@@ -52,14 +54,18 @@ body {
 }
 
 .firstLast {
-background: linear-gradient(90deg, #28d383, #00ff26);
-  -webkit-background-clip: text;   /* Safari/Chrome */
-  -webkit-text-fill-color: transparent;
-  background-clip: text;           /* Standard */
-  color: transparent;    font-size: 24px;
+    background: linear-gradient(90deg, #28d383, #00ff26);
+    -webkit-background-clip: text;
+    /* Safari/Chrome */
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Standard */
+    color: transparent;
+    font-size: 24px;
     font-weight: bold;
 }
-.logo{
+
+.logo {
     color: white;
     font-size: 24px;
     font-weight: bold;
@@ -70,9 +76,20 @@ background: linear-gradient(90deg, #28d383, #00ff26);
     margin-bottom: 40px;
 }
 
+.combine {
+    width: 100vw;
+    height: 100vh;
+    background-color: #003044;
+
+}
+
 .login {
     width: 400px;
     height: 350px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 12px;
     border: 1px solid #035f86;
     box-shadow: 2px 5px 20px #035f86;
@@ -166,6 +183,7 @@ select:focus {
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .stat-card h3 {
     width: fit-content;
     margin-bottom: 25px;
@@ -173,77 +191,73 @@ select:focus {
     color: #04E17A;
     border-bottom: 2px solid #04E17A;
 }
+
 .stat-card p {
     font-size: 24px;
     font-weight: bold;
 }
 
-.projects{
+.projects {
+    width: 100%;
     margin-top: 50px;
-    padding: 20px 175px;
+    padding: 20px 185px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    flex-direction: column;
 }
 .project-table-container {
-  width: 60%;
-  max-height: 300px;          /* height limit */
-  overflow-y: auto;           /* vertical scroll */
-  background: #121212;        /* dark bg */
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  padding: 20px;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #121212;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 0;
+}
+.projects h2 {
+    width: fit-content;
+    font-size: 22px;
+    font-weight: bold;
+    border-bottom:2px solid #04E17A;
+    color: #04E17A;
+    margin-bottom: 10px;
+}
+.project-header, .project-row {
+    display: flex;
+    padding: 14px 18px;
+    color: white;
 }
 
-.project-table-container h2 {
-  margin-bottom: 15px;
-  font-size: 22px;
-  color: #04E17A;
-  border-bottom: 2px solid #04E17A;
-  padding-bottom: 5px;
+.project-header {
+    position: sticky;
+    top: 0;
+    background: #0a0a0a;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 2;
 }
 
-.project-table {
-  width: 100%;
-  border-collapse: collapse;
-  color: white;
+.project-row:nth-child(even) {
+    background-color: #1c1c1c;
 }
 
-.project-table thead {
-  position: sticky;        /* header always visible */
-  top: 0;
-  background: linear-gradient(90deg, #28d383, #00ff26);
-  z-index: 2;
+.project-row:nth-child(odd) {
+    background-color: #222;
 }
 
-.project-table th,
-.project-table td {
-  padding: 14px 18px;
-  text-align: left;
-  border-bottom: 1px solid #333;
+.col {
+    flex: 1;
+    display: flex;
+    align-items: center;
 }
 
-.project-table th {
-  color: white;
-  font-size: 16px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.project-table tr:nth-child(even) {
-  background-color: #1c1c1c;
-}
-
-.project-table tr:nth-child(odd) {
-  background-color: #222;
-}
-
-.project-table td a {
-  color: #04E17A;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.project-table td a:hover {
-  text-decoration: underline;
+.userLogin {
+    background: #00ff26;
+    padding: 3px 5px;
+    border-radius: 8px;
+    color: black;
+    font-weight: bold;
+    display: inline-block;
+    margin: 2px 5px 2px 0;
 }

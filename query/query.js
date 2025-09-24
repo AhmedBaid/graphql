@@ -32,25 +32,22 @@ export const user_info = `
 
 export const project_info = `
 {
-    user {
-    id
-    firstName
-    lastName
-    groups(
-        where: {
-        group: { status: { _eq: finished }, _and: { eventId: { _eq: 41 } } }
-        }
+  user {
+    groups(where: {group: {status: {_eq: finished}, _and: {eventId: {_eq: 41}}}}
+    order_by:{createdAt:asc}
     ) {
-        group {
+      group {
+        captainLogin
         id
         path
-        members { userLogin }
+        members {
+          userLogin
         }
+      }
     }
-    }
-    xp_view {
+  }
+  xp_view {
     amount
     path
-    userId
-    }
+  }
 }`

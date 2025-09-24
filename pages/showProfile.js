@@ -41,35 +41,31 @@ export async function showProfile(token) {
       </div>
     </div>
     <div class="projects">
-      <div class="stat-card">
-          <h3>Completed Projects</h3>
-          <p>${completedProjects}</p>
-      </div>
+      <h2>Projects Completed (${completedProjects})</h2>
       <div class="project-table-container">
-        <h2>Projects XP Overview</h2>
-        <table class="project-table">
-          <thead>
-            <tr>
-              <th>Project</th>
-              <th>XP</th>
-              <th>Members</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${Project_data.data.user[0].groups.map(g => {
-              const projectXP = Project_data.data.xp_view
-                .filter(x => x.path === g.group.path && x.userId === Project_data.data.user[0].id)
-                .reduce((sum, x) => sum + x.amount, 0);
-              return `
-                <tr>
-                  <td>${g.group.path}</td>
-                  <td>${formatXP(projectXP)}</td>
-                  <td>${g.group.members.map(m => m.userLogin).join(", ")}</td>
-                </tr>
-              `;
-            }).join("")}
-          </tbody>
-        </table>
+        <div class="project-header">
+          <div class="col">Project</div>
+          <div class="col">XP</div>
+          <div class="col">Members</div>
+          <div class="col">Leader</div>
+        </div>
+        <div class="project-body">
+          ${Project_data.data.user[0].groups.map(g => {
+            const projectXP = Project_data.data.xp_view
+              .filter(x => x.path === g.group.path && x.userId === Project_data.data.user[0].id)
+              .reduce((sum, x) => sum + x.amount, 0);
+            return `
+              <div class="project-row">
+                <div class="col">${g.group.path.replace("/oujda/module/","")}</div>
+                <div class="col">${formatXP(projectXP)}</div>
+                <div class="col">
+                  ${g.group.members.map(m => `<div class="userLogin">${m.userLogin}</div>`).join(" ")}
+                </div>
+                <div class="col">${g.group.captainLogin || "User"}</div>
+              </div>
+            `;
+          }).join("")}
+        </div>
       </div>
     </div>
   `;
