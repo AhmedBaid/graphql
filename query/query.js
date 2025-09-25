@@ -38,9 +38,8 @@ export const project_info = `
     ) {
       group {
         captainLogin
-        id
         path
-        members {
+        members (where: { accepted: { _eq: true } })  {
           userLogin
         }
       }

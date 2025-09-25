@@ -59,7 +59,7 @@ export async function showProfile(token) {
                 <div class="col">${g.group.path.replace("/oujda/module/","")}</div>
                 <div class="col">${formatXP(projectXP)}</div>
                 <div class="col">
-                  ${g.group.members.map(m => `<div class="userLogin">${m.userLogin}</div>`).join(" ")}
+                  ${g.group.members.map(m => `<div class="userLogin"><a href="https://profile.zone01oujda.ma/profile/${m.userLogin}">${m.userLogin}</a></div>`).join(" ")}
                 </div>
                 <div class="col">${g.group.captainLogin || "User"}</div>
               </div>
