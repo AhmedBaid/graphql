@@ -30,7 +30,7 @@ export const user_info = `
 }`
 
 
-export const project_info = `
+export const project_list = `
 {
   user {
     groups(where: {group: {status: {_eq: finished}, _and: {eventId: {_eq: 41}}}}
@@ -48,5 +48,18 @@ export const project_info = `
   xp_view {
     amount
     path
+  }
+}`
+
+export const skills = `
+{
+  user {
+    transactions(
+      where: {type: {_nin: ["xp", "level", "up", "down"]}}
+      order_by: {amount: desc}
+    ) {
+      skillType: type
+      skillAmount: amount
+    }
   }
 }`
