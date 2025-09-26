@@ -85,75 +85,75 @@ export async function showProfile(token) {
       </div>
   `;
   const svgContainer = document.querySelector(".container-svg");
-  const svg = document.getElementById("skillsChart");
+const svg = document.getElementById("skillsChart");
 
-  // Get the real width of the container dynamically
-  const containerWidth = svgContainer.clientWidth - 200;
+const barHeight = 20;
+const spacing = 20;
+const color = "#3edd56ff";
 
-  const barHeight = 20;
-  const spacing = 20;
-  const colors = ["#4deeea", "#f000ff", "#ffe700", "#74ee15", "#001eff"];
+const maxAmount = Math.max(...unique_skills.map(s => s.skillAmount || 1));
+const svgHeight = unique_skills.length * (barHeight + spacing) + 30;
 
-  svg.setAttribute("width", containerWidth);
-  svg.setAttribute("height", unique_skills.length * (barHeight + spacing) + 50);
+// Set SVG attributes for responsiveness
+svg.setAttribute("width", "100%");
+svg.setAttribute("height", svgHeight);
+svg.setAttribute("viewBox", `0 0 1000 ${svgHeight}`);
+svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
-  const maxAmount = Math.max(...unique_skills.map(s => s.skillAmount || 1));
+// Fixed padding values in viewBox units
+const leftPadding = 150;
+const rightPadding = 50;
+const fullBarWidth = 1000 - leftPadding - rightPadding;
 
-  unique_skills.forEach((skill, i) => {
-    const y = i * (barHeight + spacing) + 30;
-    const amount = skill.skillAmount || 0;
+unique_skills.forEach((skill, i) => {
+  const y = i * (barHeight + spacing) + 30;
+  const amount = skill.skillAmount || 0;
+  const barWidth = (amount / maxAmount) * fullBarWidth;
 
-    // Leave space for text on the left and right
-    const leftPadding = 150;
-    const rightPadding = 50;
-    const availableWidth = containerWidth - leftPadding - rightPadding;
+  // Skill name
+  const name = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  name.setAttribute("x", 10);
+  name.setAttribute("y", y + barHeight / 2);
+  name.setAttribute("dominant-baseline", "middle");
+  name.setAttribute("font-size", "16");
+  name.setAttribute("fill", "white");
+  name.setAttribute("font-family", "Arial");
+  name.textContent = skill.skillType.replace("skill_", "");
+  svg.appendChild(name);
 
-    const barWidth = (amount / maxAmount) * availableWidth;
+  // Background bar
+  const bgBar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  bgBar.setAttribute("x", leftPadding);
+  bgBar.setAttribute("y", y);
+  bgBar.setAttribute("width", fullBarWidth);
+  bgBar.setAttribute("height", barHeight);
+  bgBar.setAttribute("fill", "#333");
+  bgBar.setAttribute("rx", "8");
+  bgBar.setAttribute("ry", "8");
+  svg.appendChild(bgBar);
 
-    // Skill name
-    const name = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    name.setAttribute("x", "10");
-    name.setAttribute("y", y + barHeight / 2);
-    name.setAttribute("dominant-baseline", "middle");
-    name.setAttribute("font-size", "16");
-    name.setAttribute("fill", "white");
-    name.setAttribute("font-family", "Arial");
-    name.textContent = skill.skillType.replace("skill_", "");
-    svg.appendChild(name);
+  // Progress bar
+  const progress = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  progress.setAttribute("x", leftPadding);
+  progress.setAttribute("y", y);
+  progress.setAttribute("width", barWidth);
+  progress.setAttribute("height", barHeight);
+  progress.setAttribute("fill", color);
+  progress.setAttribute("rx", "8");
+  progress.setAttribute("ry", "8");
+  svg.appendChild(progress);
 
-    // Background bar
-    const bgBar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    bgBar.setAttribute("x", leftPadding);
-    bgBar.setAttribute("y", y);
-    bgBar.setAttribute("width", availableWidth);
-    bgBar.setAttribute("height", barHeight);
-    bgBar.setAttribute("fill", "#333");
-    bgBar.setAttribute("rx", "8");
-    bgBar.setAttribute("ry", "8");
-    svg.appendChild(bgBar);
-
-    // Progress bar
-    const progress = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    progress.setAttribute("x", leftPadding);
-    progress.setAttribute("y", y);
-    progress.setAttribute("width", barWidth);
-    progress.setAttribute("height", barHeight);
-    progress.setAttribute("fill", colors[i % colors.length]);
-    progress.setAttribute("rx", "8");
-    progress.setAttribute("ry", "8");
-    svg.appendChild(progress);
-
-    // Percentage text
-    const value = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    value.setAttribute("x", availableWidth + 200); 
-    value.setAttribute("y", y + barHeight / 2);
-    value.setAttribute("dominant-baseline", "middle");
-    value.setAttribute("font-size", "16");
-    value.setAttribute("fill", "white");
-    value.setAttribute("font-family", "Arial");
-    value.textContent = `${amount}%`;
-    svg.appendChild(value);
-  });
+  // Percentage text
+  const value = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  value.setAttribute("x", leftPadding + barWidth + 10);
+  value.setAttribute("y", y + barHeight / 2);
+  value.setAttribute("dominant-baseline", "middle");
+  value.setAttribute("font-size", "16");
+  value.setAttribute("fill", "white");
+  value.setAttribute("font-family", "Arial");
+  value.textContent = `${amount}%`;
+  svg.appendChild(value);
+});
 
 }
 
