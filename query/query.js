@@ -63,3 +63,23 @@ export const skills = `
     }
   }
 }`
+
+export const audits = `
+{ 
+  user {
+    auditRatio
+    totalUp
+    totalDown
+    success:audits_aggregate(where: { closureType: { _eq: succeeded } }) {
+      aggregate {
+        count
+      }
+    }
+    failed: audits_aggregate(where: { closureType: { _eq: failed } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+`

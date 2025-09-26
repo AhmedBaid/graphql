@@ -90,7 +90,7 @@ export async function showProfile(token) {
     const svg = document.getElementById("skillsChart");
 
     // Get the real width of the container dynamically
-    const containerWidth = svgContainer.clientWidth - 200;
+    const containerWidth = svgContainer.clientWidth - 50;
 
     const barHeight = 20;
     const spacing = 20;
@@ -105,7 +105,7 @@ export async function showProfile(token) {
       const amount = skill.skillAmount || 0;
 
       // Leave space for text on the left and right
-      const leftPadding = 150;
+      const leftPadding = 120;
       const rightPadding = 50;
       const availableWidth = containerWidth - leftPadding - rightPadding - 200;
 
@@ -146,7 +146,7 @@ export async function showProfile(token) {
 
       // Percentage text
       const value = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      value.setAttribute("x", availableWidth + 400);
+      value.setAttribute("x", availableWidth + 350);
       value.setAttribute("y", y + barHeight / 2);
       value.setAttribute("dominant-baseline", "middle");
       value.setAttribute("font-size", "16");
@@ -170,3 +170,4 @@ export async function showProfile(token) {
   logoutBtn.addEventListener("click", () => logout());
 }
 
+  

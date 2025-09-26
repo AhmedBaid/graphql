@@ -215,7 +215,7 @@ select:focus {
 .project-table-container {
     width: 100%;
     max-height: 300px;
-    overflow-y: auto;
+    overflow: auto;
     background: #121212;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
