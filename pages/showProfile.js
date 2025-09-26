@@ -1,6 +1,6 @@
 import { container, logout } from "../config/config.js";
 import { FetchGraphqlapi } from "../helpers/FetchApi.js";
-import { project_list, skills, user_info } from "../query/query.js";
+import { audits, project_list, skills, user_info } from "../query/query.js";
 import { getRank } from "../helpers/GetRank.js";
 import { formatXP } from "../helpers/FormatXp.js";
 import { debounce } from "../helpers/debounce.js";
@@ -9,6 +9,7 @@ export async function showProfile(token) {
   const Profile_data = await FetchGraphqlapi(user_info, token);
   const Project_data = await FetchGraphqlapi(project_list, token);
   const skills_data = await FetchGraphqlapi(skills, token);
+  const audits_data = await FetchGraphqlapi(audits, token);
 
   const firstName = Profile_data.data.user[0].firstName || "user";
   const lastName = Profile_data.data.user[0].lastName || "user";
@@ -83,13 +84,17 @@ export async function showProfile(token) {
       <div class="container-svg">
         <svg id="skillsChart"></svg>
       </div>
+    </div>
+    <div class="audits">
+      <h2>Audit info</h2>
+      <div class="audit-svg">
+        <svg id="audit"></svg>
       </div>
+    </div>
   `;
   function drawSvg() {
     const svgContainer = document.querySelector(".container-svg");
     const svg = document.getElementById("skillsChart");
-
-    // Get the real width of the container dynamically
     const containerWidth = svgContainer.clientWidth - 50;
 
     const barHeight = 20;
@@ -104,25 +109,18 @@ export async function showProfile(token) {
       const y = i * (barHeight + spacing) + 30;
       const amount = skill.skillAmount || 0;
 
-      // Leave space for text on the left and right
       const leftPadding = 120;
       const rightPadding = 50;
       const availableWidth = containerWidth - leftPadding - rightPadding - 200;
 
       const barWidth = (amount / maxAmount) * availableWidth;
 
-      // Skill name
       const name = document.createElementNS("http://www.w3.org/2000/svg", "text");
       name.setAttribute("x", "10");
       name.setAttribute("y", y + barHeight / 2);
-      name.setAttribute("dominant-baseline", "middle");
-      name.setAttribute("font-size", "16");
-      name.setAttribute("fill", "white");
-      name.setAttribute("font-family", "Arial");
       name.textContent = skill.skillType.replace("skill_", "");
       svg.appendChild(name);
 
-      // Background bar
       const bgBar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
       bgBar.setAttribute("x", leftPadding);
       bgBar.setAttribute("y", y);
@@ -133,7 +131,6 @@ export async function showProfile(token) {
       bgBar.setAttribute("ry", "8");
       svg.appendChild(bgBar);
 
-      // Progress bar
       const progress = document.createElementNS("http://www.w3.org/2000/svg", "rect");
       progress.setAttribute("x", leftPadding);
       progress.setAttribute("y", y);
@@ -144,17 +141,16 @@ export async function showProfile(token) {
       progress.setAttribute("ry", "8");
       svg.appendChild(progress);
 
-      // Percentage text
       const value = document.createElementNS("http://www.w3.org/2000/svg", "text");
       value.setAttribute("x", availableWidth + 350);
       value.setAttribute("y", y + barHeight / 2);
       value.setAttribute("dominant-baseline", "middle");
-      value.setAttribute("font-size", "16");
-      value.setAttribute("fill", "white");
-      value.setAttribute("font-family", "Arial");
       value.textContent = `${amount}%`;
       svg.appendChild(value);
+      // svg for audit
+
     });
+    
   }
   drawSvg();
 
@@ -170,4 +166,3 @@ export async function showProfile(token) {
   logoutBtn.addEventListener("click", () => logout());
 }
 
-  
