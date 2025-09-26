@@ -5,7 +5,6 @@ import { getRank } from "../helpers/GetRank.js";
 import { formatXP } from "../helpers/FormatXp.js";
 
 export async function showProfile(token) {
-
   const Profile_data = await FetchGraphqlapi(user_info, token);
   const Project_data = await FetchGraphqlapi(project_list, token);
   const skills_data = await FetchGraphqlapi(skills, token);
@@ -61,10 +60,10 @@ export async function showProfile(token) {
         </div>
         <div class="project-body">
           ${Project_data.data.user[0].groups.map(g => {
-              const projectXP = Project_data.data.xp_view
-                .filter(x => x.path === g.group.path && x.userId === Project_data.data.user[0].id)
-                .reduce((sum, x) => sum + x.amount, 0);
-              return `
+    const projectXP = Project_data.data.xp_view
+      .filter(x => x.path === g.group.path && x.userId === Project_data.data.user[0].id)
+      .reduce((sum, x) => sum + x.amount, 0);
+    return `
               <div class="project-row">
                 <div class="col">${g.group.path.replace("/oujda/module/", "")}</div>
                 <div class="col">${formatXP(projectXP)}</div>
@@ -78,8 +77,63 @@ export async function showProfile(token) {
         </div>
       </div>
     </div>
+    <div class="skills">
+      <h2>Your Skills (${unique_skills.length})</h2>
+      <div class="container-svg">
+        <svg id="skillsChart"></svg>
+      </div>
+      </div>
   `;
+  const svg = document.getElementById("skillsChart");
+  const width = 1000;
+  const barHeight = 40;
+  const spacing = 20;
+  const colors = ["#4deeea", "#f000ff", "#ffe700", "#74ee15", "#001eff"];
 
+  svg.setAttribute("width", width);
+  svg.setAttribute("height", (unique_skills.length * (barHeight + spacing)) + 100);
+
+
+  const maxAmount = unique_skills[0].skillAmount || 1;
+
+
+  unique_skills.forEach((skill, i) => {
+    const y = i * (barHeight + spacing) + 50;
+    const amount = skill.skillAmount || 0;
+    const barWidth = Math.max(10, (amount / maxAmount) * (width - 150));
+    const combine = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", "10");
+    text.setAttribute("y", `${y + barHeight / 2}`);
+    text.setAttribute("dominant-baseline", "middle");
+    text.textContent = skill.skillType.replace("skill_", "");
+    combine.appendChild(text);
+
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", "100");
+    line.setAttribute("y1", `${y}`);
+    line.setAttribute("x2", `${100 + barWidth}`);
+    line.setAttribute("y2", `${y}`);
+    line.setAttribute("stroke", colors[i % colors.length]);
+    line.setAttribute("stroke-width", "10");
+    line.setAttribute("stroke-linecap", "round");
+    combine.appendChild(line);
+
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", `${100 + barWidth}`);
+    circle.setAttribute("cy", `${y}`);
+    circle.setAttribute("r", "10");
+    circle.setAttribute("fill", colors[i % colors.length]);
+    combine.appendChild(circle);
+
+    const value = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    value.setAttribute("x", `${120 + barWidth}`);
+    value.setAttribute("y", `${y}`);
+    value.setAttribute("dominant-baseline", "middle");
+    value.textContent = `${amount} %`;
+    combine.appendChild(value);
+    svg.appendChild(combine);
+  });
   const logoutBtn = document.getElementById("logoutBtn");
   logoutBtn.addEventListener("click", () => {
     logout();
