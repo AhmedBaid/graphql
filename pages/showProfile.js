@@ -84,59 +84,76 @@ export async function showProfile(token) {
       </div>
       </div>
   `;
+  const svgContainer = document.querySelector(".container-svg");
   const svg = document.getElementById("skillsChart");
-  const width = 1000;
-  const barHeight = 40;
+
+  // Get the real width of the container dynamically
+  const containerWidth = svgContainer.clientWidth - 200;
+
+  const barHeight = 20;
   const spacing = 20;
   const colors = ["#4deeea", "#f000ff", "#ffe700", "#74ee15", "#001eff"];
 
-  svg.setAttribute("width", width);
-  svg.setAttribute("height", (unique_skills.length * (barHeight + spacing)) + 100);
+  svg.setAttribute("width", containerWidth);
+  svg.setAttribute("height", unique_skills.length * (barHeight + spacing) + 50);
 
-
-  const maxAmount = unique_skills[0].skillAmount || 1;
-
+  const maxAmount = Math.max(...unique_skills.map(s => s.skillAmount || 1));
 
   unique_skills.forEach((skill, i) => {
-    const y = i * (barHeight + spacing) + 50;
+    const y = i * (barHeight + spacing) + 30;
     const amount = skill.skillAmount || 0;
-    const barWidth = Math.max(10, (amount / maxAmount) * (width - 150));
-    const combine = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("x", "10");
-    text.setAttribute("y", `${y + barHeight / 2}`);
-    text.setAttribute("dominant-baseline", "middle");
-    text.textContent = skill.skillType.replace("skill_", "");
-    combine.appendChild(text);
 
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute("x1", "100");
-    line.setAttribute("y1", `${y}`);
-    line.setAttribute("x2", `${100 + barWidth}`);
-    line.setAttribute("y2", `${y}`);
-    line.setAttribute("stroke", colors[i % colors.length]);
-    line.setAttribute("stroke-width", "10");
-    line.setAttribute("stroke-linecap", "round");
-    combine.appendChild(line);
+    // Leave space for text on the left and right
+    const leftPadding = 150;
+    const rightPadding = 50;
+    const availableWidth = containerWidth - leftPadding - rightPadding;
 
-    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle.setAttribute("cx", `${100 + barWidth}`);
-    circle.setAttribute("cy", `${y}`);
-    circle.setAttribute("r", "10");
-    circle.setAttribute("fill", colors[i % colors.length]);
-    combine.appendChild(circle);
+    const barWidth = (amount / maxAmount) * availableWidth;
 
+    // Skill name
+    const name = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    name.setAttribute("x", "10");
+    name.setAttribute("y", y + barHeight / 2);
+    name.setAttribute("dominant-baseline", "middle");
+    name.setAttribute("font-size", "16");
+    name.setAttribute("fill", "white");
+    name.setAttribute("font-family", "Arial");
+    name.textContent = skill.skillType.replace("skill_", "");
+    svg.appendChild(name);
+
+    // Background bar
+    const bgBar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    bgBar.setAttribute("x", leftPadding);
+    bgBar.setAttribute("y", y);
+    bgBar.setAttribute("width", availableWidth);
+    bgBar.setAttribute("height", barHeight);
+    bgBar.setAttribute("fill", "#333");
+    bgBar.setAttribute("rx", "8");
+    bgBar.setAttribute("ry", "8");
+    svg.appendChild(bgBar);
+
+    // Progress bar
+    const progress = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    progress.setAttribute("x", leftPadding);
+    progress.setAttribute("y", y);
+    progress.setAttribute("width", barWidth);
+    progress.setAttribute("height", barHeight);
+    progress.setAttribute("fill", colors[i % colors.length]);
+    progress.setAttribute("rx", "8");
+    progress.setAttribute("ry", "8");
+    svg.appendChild(progress);
+
+    // Percentage text
     const value = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    value.setAttribute("x", `${120 + barWidth}`);
-    value.setAttribute("y", `${y}`);
+    value.setAttribute("x", availableWidth + 200); 
+    value.setAttribute("y", y + barHeight / 2);
     value.setAttribute("dominant-baseline", "middle");
-    value.textContent = `${amount} %`;
-    combine.appendChild(value);
-    svg.appendChild(combine);
+    value.setAttribute("font-size", "16");
+    value.setAttribute("fill", "white");
+    value.setAttribute("font-family", "Arial");
+    value.textContent = `${amount}%`;
+    svg.appendChild(value);
   });
-  const logoutBtn = document.getElementById("logoutBtn");
-  logoutBtn.addEventListener("click", () => {
-    logout();
-  });
+
 }
 
