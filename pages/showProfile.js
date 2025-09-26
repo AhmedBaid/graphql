@@ -10,6 +10,7 @@ export async function showProfile(token) {
   const Project_data = await FetchGraphqlapi(project_list, token);
   const skills_data = await FetchGraphqlapi(skills, token);
   const audits_data = await FetchGraphqlapi(audits, token);
+  console.log(audits_data);
 
   const firstName = Profile_data.data.user[0].firstName || "user";
   const lastName = Profile_data.data.user[0].lastName || "user";
@@ -20,6 +21,7 @@ export async function showProfile(token) {
   const list_skills = skills_data.data.user[0].transactions || [];
   const unique_skills = [];
   const seen = new Set();
+  // const accepted
 
   for (const t of list_skills) {
     if (!seen.has(t.skillType)) {
@@ -86,13 +88,13 @@ export async function showProfile(token) {
       </div>
     </div>
     <div class="audits">
-      <h2>Audit info</h2>
+      <h2>Audit Performance</h2>
       <div class="audit-svg">
         <svg id="audit"></svg>
       </div>
     </div>
   `;
-  function drawSvg() {
+  function draw_SkillsSvg() {
     const svgContainer = document.querySelector(".container-svg");
     const svg = document.getElementById("skillsChart");
     const containerWidth = svgContainer.clientWidth - 50;
@@ -117,7 +119,7 @@ export async function showProfile(token) {
 
       const name = document.createElementNS("http://www.w3.org/2000/svg", "text");
       name.setAttribute("x", "10");
-      name.setAttribute("y", y + barHeight / 2);
+      name.setAttribute("y", y + barHeight);
       name.textContent = skill.skillType.replace("skill_", "");
       svg.appendChild(name);
 
@@ -147,12 +149,48 @@ export async function showProfile(token) {
       value.setAttribute("dominant-baseline", "middle");
       value.textContent = `${amount}%`;
       svg.appendChild(value);
-      // svg for audit
-
     });
-    
+
   }
-  drawSvg();
+  function draw_AuditSvg() {
+    const div = document.querySelector(".audit-svg");
+    div.innerHTML = `
+    <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="150" cy="150" r="100" fill="none" stroke="#2c2f48" stroke-width="40"/>
+      
+      <!-- Success arc (74%) -->
+      <circle
+        cx="150"
+        cy="150"
+        r="100"
+        fill="none"
+        stroke="#4caf50"
+        stroke-width="40"
+        stroke-dasharray="465.421, 628.319"
+        stroke-dashoffset="0"
+        transform="rotate(-90 150 150)"
+      />
+      
+      <!-- Failed arc (26%) -->
+      <circle
+        cx="150"
+        cy="150"
+        r="100"
+        fill="none"
+        stroke="#e74c3c"
+        stroke-width="40"
+        stroke-dasharray="162.898, 628.319"
+        stroke-dashoffset="-465.421"
+        transform="rotate(-90 150 150)"
+      />
+
+      <text x="150" y="145" text-anchor="middle" fill="white" font-size="22px" font-family="Arial">50 Audits</text>
+
+    </svg>
+    `
+  }
+  draw_SkillsSvg();
+  draw_AuditSvg();
 
   window.addEventListener("resize", debounce(() => {
     const svg = document.getElementById("skillsChart");
