@@ -65,37 +65,37 @@ export async function showProfile(token) {
       </div>
     </div>
     <div class="projects">
-  <h2>Transactions (${completedProjects})</h2>
-  <div class="project-table-container">
-    <div class="project-header">
-      <div class="col">Project</div>
-      <div class="col">XP</div>
-      <div class="col">Created At</div>
-      <div class="col">Team Members</div>
-      <div class="col">Team Leader</div>
-    </div>
-    <div class="project-body">
-      ${Project_data.data.transaction.map(t => {
-    const projectName = t.object?.name || "Unknown";
-    const xp = formatXP(t.amount || 0);
-    const date = new Date(t.createdAt).toLocaleDateString();
-    const members = t.object.progresses?.[0]?.group?.members || [];
-    const leader = t.object.progresses?.[0]?.group?.captainLogin || "";
-
-    return `
-          <div class="project-row">
-            <div class="col">${projectName}</div>
-            <div class="col" style="color:${t.amount > 0 ? 'green' : 'red'}">${xp}</div>
-            <div class="col">${date}</div>
-            <div class="col members">
-              ${members.map(m => `<div class="userLogin"><a href="https://profile.zone01oujda.ma/profile/${m.userLogin}">${m.userLogin}</a></div>`).join(" ")}
-            </div>
-            <div class="col">${leader}</div>
-          </div>
-        `;
-  }).join("")}
+      <h2>Transactions (${completedProjects})</h2>
+      <div class="project-table-container">
+        <div class="project-header">
+          <div class="col">Project</div>
+          <div class="col">XP</div>
+          <div class="col">Created At</div>
+          <div class="col">Team Members</div>
+          <div class="col">Team Leader</div>
         </div>
-      </div>
+        <div class="project-body">
+          ${Project_data.data.transaction.map(t => {
+        const projectName = t.object?.name || "Unknown";
+        const xp = formatXP(t.amount || 0);
+        const date = new Date(t.createdAt).toLocaleDateString();
+        const members = t.object.progresses?.[0]?.group?.members || [];
+        const leader = t.object.progresses?.[0]?.group?.captainLogin || "";
+
+        return `
+              <div class="project-row">
+                <div class="col">${projectName}</div>
+                <div class="col" style="color:${t.amount > 0 ? '#00FF00' : '#FF0000'}">${xp}</div>
+                <div class="col">${date}</div>
+                <div class="col members">
+                  ${members.map(m => `<div class="userLogin"><a href="https://profile.zone01oujda.ma/profile/${m.userLogin}">${m.userLogin}</a></div>`).join(" ")}
+                </div>
+                <div class="col">${leader}</div>
+              </div>
+            `;
+      }).join("")}
+            </div>
+          </div>
     </div>
     <div class="skills">
       <h2>Your Skills (${unique_skills.length})</h2>
