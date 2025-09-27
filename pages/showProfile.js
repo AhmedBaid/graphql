@@ -76,13 +76,13 @@ export async function showProfile(token) {
         </div>
         <div class="project-body">
           ${Project_data.data.transaction.map(t => {
-        const projectName = t.object?.name || "Unknown";
-        const xp = formatXP(t.amount || 0);
-        const date = new Date(t.createdAt).toLocaleDateString();
-        const members = t.object.progresses?.[0]?.group?.members || [];
-        const leader = t.object.progresses?.[0]?.group?.captainLogin || "";
+    const projectName = t.object?.name || "Unknown";
+    const xp = formatXP(t.amount || 0);
+    const date = new Date(t.createdAt).toLocaleDateString();
+    const members = t.object.progresses?.[0]?.group?.members || [];
+    const leader = t.object.progresses?.[0]?.group?.captainLogin || "";
 
-        return `
+    return `
               <div class="project-row">
                 <div class="col">${projectName}</div>
                 <div class="col" style="color:${t.amount > 0 ? '#00FF00' : '#FF0000'}">${xp}</div>
@@ -93,7 +93,7 @@ export async function showProfile(token) {
                 <div class="col">${leader}</div>
               </div>
             `;
-      }).join("")}
+  }).join("")}
             </div>
           </div>
     </div>
@@ -111,7 +111,9 @@ export async function showProfile(token) {
     </div>
   `;
   const profilePic = document.querySelector(".profile-pic");
-  console.log(profilePic);
+  profilePic.onerror = () => {
+    profilePic.src = "../assets/images/profile.jpg";
+  };
 
   profilePic.addEventListener("click", () => {
     const overlay = document.createElement("div");
@@ -262,7 +264,7 @@ export async function showProfile(token) {
     <div class="audit-details">
       <div class="audit-stats">
         <p>${formatXP(totalUp)}</p>
-        <h3>Total up212</h3>
+        <h3>Total up</h3>
       </div>
       <div class="audit-stats">
         <p>${formatXP(totalDown)}</p>

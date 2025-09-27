@@ -21,7 +21,7 @@ body {
 
 *::-webkit-scrollbar {
     width: 8px;
-    height: 8px; 
+    height: 8px;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -75,20 +75,7 @@ body {
     overflow: hidden;
 }
 
-#logoutBtn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
 
-#logoutBtn:hover::before {
-    left: 100%;
-}
 
 #logoutBtn:hover {
     transform: translateY(-2px);
@@ -105,7 +92,7 @@ body {
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    border: 3px solid transparent;
+    border: 2px solid transparent;
     background: linear-gradient(135deg, #28d383, #00ff26);
     padding: 2px;
     cursor: pointer;
@@ -174,21 +161,7 @@ body {
     justify-content: center;
 }
 
-.stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(4, 225, 122, 0.05), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
 
-.stat-card:hover::before {
-    opacity: 1;
-}
 
 .stat-card:hover {
     transform: translateY(-8px);
@@ -226,6 +199,8 @@ body {
 
 .projects h2 {
     font-size: clamp(20px, 4vw, 28px);
+    border-bottom: 2px solid #04E17A;
+    width: fit-content;
     font-weight: 700;
     color: #04E17A;
     margin-bottom: 30px;
@@ -233,16 +208,7 @@ body {
     display: inline-block;
 }
 
-.projects h2::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    width: 60%;
-    height: 3px;
-    background: linear-gradient(90deg, #04E17A, transparent);
-    border-radius: 2px;
-}
+
 
 .project-table-container {
     background: rgba(18, 18, 18, 0.9);
@@ -330,6 +296,8 @@ body {
 
 .skills h2 {
     font-size: clamp(20px, 4vw, 28px);
+    border-bottom: 2px solid #04E17A;
+    width: fit-content;
     font-weight: 700;
     color: #04E17A;
     margin-bottom: 30px;
@@ -337,16 +305,6 @@ body {
     display: inline-block;
 }
 
-.skills h2::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    width: 60%;
-    height: 3px;
-    background: linear-gradient(90deg, #04E17A, transparent);
-    border-radius: 2px;
-}
 
 .skills .container-svg {
     color: white;
@@ -384,22 +342,14 @@ body {
 .audits h2 {
     font-size: clamp(20px, 4vw, 28px);
     font-weight: 700;
+    border-bottom: 2px solid #04E17A;
+    width: fit-content;
     color: #04E17A;
     margin-bottom: 30px;
     position: relative;
     display: inline-block;
 }
 
-.audits h2::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    width: 60%;
-    height: 3px;
-    background: linear-gradient(90deg, #04E17A, transparent);
-    border-radius: 2px;
-}
 
 .audits .audit-svg {
     display: flex;
@@ -426,7 +376,6 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 20px;
     width: 100%;
-    max-width: 600px;
 }
 
 .audit-stats {
@@ -442,7 +391,6 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(4, 225, 122, 0.2);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    width: 100%;
     height: 120px;
     color: white;
     transition: all 0.3s ease;
@@ -450,21 +398,7 @@ body {
     overflow: hidden;
 }
 
-.audit-stats::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(4, 225, 122, 0.05), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
 
-.audit-stats:hover::before {
-    opacity: 1;
-}
 
 .audit-stats:hover {
     transform: translateY(-5px);
@@ -558,7 +492,7 @@ body {
     height: 300px;
     border-radius: 20px;
     object-fit: cover;
-    border: 3px solid #04E17A;
+    border: 2px solid #04E17A;
     margin-bottom: 20px;
     box-shadow: 0 10px 30px rgba(4, 225, 122, 0.3);
 }
@@ -875,6 +809,9 @@ html {
     padding: 25px;
 }
 
+.logg{
+    margin-bottom: 30px;
+}
 input {
     padding: 15px;
     border-radius: 10px;
