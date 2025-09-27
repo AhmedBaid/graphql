@@ -1,6 +1,7 @@
 export const user_info = `
 {
     user {
+    login
     firstName
     lastName
     events(where: {cohorts: {labelName: {_is_null: false}}}) {

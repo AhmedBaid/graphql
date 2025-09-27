@@ -14,6 +14,9 @@ export async function showProfile(token) {
 
   const firstName = Profile_data.data.user[0].firstName || "user";
   const lastName = Profile_data.data.user[0].lastName || "user";
+  const username = Profile_data.data.user[0].login || "user";
+  console.log(username);
+  
   const totalXP = Profile_data.data.xp.aggregate.sum.amount || 0;
   const level = Profile_data.data.level.aggregate.max.amount || 0;
   const cohort = Profile_data.data.user[0].events[0].cohorts[0].labelName || "cohort not found";
@@ -33,7 +36,10 @@ export async function showProfile(token) {
   container.innerHTML = `
     <div class="header">
       <h1 class="logo">Welcome, <span class="firstLast">${firstName} ${lastName}</span></h1>
-      <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
+      <div class="profile-actions">
+        <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
+        <img src="https://discord.zone01oujda.ma/assets/pictures/${username}.jpg" alt="Profile Picture" class="profile-pic"/>
+      </div>
     </div>
     <div class="stats">
       <div class="stat-card">
