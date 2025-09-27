@@ -21,7 +21,7 @@ body {
 
 *::-webkit-scrollbar {
     width: 8px;
-    height: 8px;
+    height: 8px; 
 }
 
 *::-webkit-scrollbar-thumb {
@@ -152,7 +152,7 @@ body {
     gap: 30px;
     margin: 120px auto 0;
     padding: 0 clamp(20px, 5vw, 100px);
-    max-width: 1400px;
+    width: 100%;
 }
 
 .stat-card {
@@ -266,7 +266,7 @@ body {
 .project-header {
     position: sticky;
     top: 0;
-    background: linear-gradient(135deg, rgba(4, 225, 122, 0.1), rgba(4, 225, 122, 0.05));
+    background: black;
     font-weight: 600;
     color: #04E17A;
     font-size: 14px;

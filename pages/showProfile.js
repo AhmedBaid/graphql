@@ -43,7 +43,7 @@ export async function showProfile(token) {
       <h1 class="logo">Welcome, <span class="firstLast">${firstName} ${lastName}</span></h1>
       <div class="profile-actions">
         <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
-        <img src="https://discord.zone01oujda.ma/assets/pictures/${username}.jpg" alt="Profile Picture" class="profile-pic"/>
+        <img src="https://discord.zone01oujda.ma/assets/pictures/${username}.jpg" alt="profile pic" class="profile-pic"/>
       </div>
     </div>
     <div class="stats">
