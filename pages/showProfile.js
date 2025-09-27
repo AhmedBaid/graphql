@@ -152,63 +152,86 @@ export async function showProfile(token) {
     });
 
   }
-  function draw_AuditSvg(auditData) {
+  function draw_AuditSvg() {
     const div = document.querySelector(".audit-svg");
 
-    const failedCount = auditData.data.user[0].failed.aggregate.count;
-    const successCount = auditData.data.user[0].success.aggregate.count;
+    const failedCount = audits_data.data.user[0].failed.aggregate.count;
+    const successCount = audits_data.data.user[0].success.aggregate.count;
     const total = failedCount + successCount;
+    const totalUp = audits_data.data.user[0].totalUp;
+    const totalDown = audits_data.data.user[0].totalDown;
 
-    const ratio = auditData.data.user[0].auditRatio.toFixed(2);
+
+    const ratio = audits_data.data.user[0].auditRatio.toFixed(2);
 
     const radius = 100;
     const circumference = 2 * Math.PI * radius;
 
-    const successPercent = (successCount / total) * 100;
-    const failedPercent = (failedCount / total) * 100;
+    const successPourcentage = (successCount / total) * 100;
+    const failedPourcentage = (failedCount / total) * 100;
 
-    const successLength = (successPercent / 100) * circumference;
-    const failedLength = (failedPercent / 100) * circumference;
+    const successLength = (successPourcentage / 100) * circumference;
+    const failedLength = (failedPourcentage / 100) * circumference;
 
     div.innerHTML = `
-    <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-      <!-- الخلفية -->
-      <circle cx="150" cy="150" r="${radius}" fill="none" stroke="#2c2f48" stroke-width="40"/>
-      
-      <!-- Success arc -->
-      <circle
-        cx="150"
-        cy="150"
-        r="${radius}"
-        fill="none"
-        stroke="#4caf50"
-        stroke-width="40"
-        stroke-dasharray="${successLength}, ${circumference}"
-        stroke-dashoffset="0"
-        transform="rotate(-90 150 150)"
-      />
-      
-      <!-- Failed arc -->
-      <circle
-        cx="150"
-        cy="150"
-        r="${radius}"
-        fill="none"
-        stroke="#e74c3c"
-        stroke-width="40"
-        stroke-dasharray="${failedLength}, ${circumference}"
-        stroke-dashoffset="-${successLength}"
-        transform="rotate(-90 150 150)"
-      />
+    <div class="combined-chart">
+      <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <!-- الخلفية -->
+        <circle cx="150" cy="150" r="${radius}" fill="none" stroke="#2c2f48" stroke-width="40"/>
+        
+        <!-- Success arc -->
+        <circle
+          cx="150"
+          cy="150"
+          r="${radius}"
+          fill="none"
+          stroke="#4caf50"
+          stroke-width="40"
+          stroke-dasharray="${successLength}, ${circumference}"
+          stroke-dashoffset="0"
+          transform="rotate(-90 150 150)"
+        />
+        
+        <!-- Failed arc -->
+        <circle
+          cx="150"
+          cy="150"
+          r="${radius}"
+          fill="none"
+          stroke="#e74c3c"
+          stroke-width="40"
+          stroke-dasharray="${failedLength}, ${circumference}"
+          stroke-dashoffset="-${successLength}"
+          transform="rotate(-90 150 150)"
+        />
 
-      <!-- النص فالنص -->
-      <text x="150" y="140" text-anchor="middle" fill="white" font-size="22px" font-family="Arial">
-        ${total} Audits
-      </text>
-      <text x="150" y="170" text-anchor="middle" fill="#04E17A" font-size="16px" font-family="Arial">
-        Ratio: ${ratio}
-      </text>
-    </svg>
+        <!-- النص فالنص -->
+        <text x="150" y="140" text-anchor="middle" fill="white" >
+          ${total} Audits
+        </text>
+        <text x="150" y="170" text-anchor="middle" fill="#04E17A" >
+          Ratio: ${ratio}
+        </text>
+      </svg>
+    </div>
+    <div class="audit-details">
+      <div class="audit-stats">
+        <p>${formatXP(totalUp)}</p>
+        <h3>Total up</h3>
+      </div>
+      <div class="audit-stats">
+        <p>${formatXP(totalDown)}</p>
+        <h3>Total down</h3>
+      </div>
+      <div class="audit-stats">
+        <p class="green">${successPourcentage.toFixed(2)} %</p>
+        <h3>Success</h3>
+      </div>
+      <div class="audit-stats">
+        <p class="red">${failedPourcentage.toFixed(2)} %</p>
+        <h3>Failed</h3>
+      </div>
+    </div>
   `;
   }
 
@@ -220,7 +243,7 @@ export async function showProfile(token) {
     while (svg.firstChild) {
       svg.removeChild(svg.firstChild);
     }
-    drawSvg();
+    draw_SkillsSvg();
   }, 500));
 
   const logoutBtn = document.getElementById("logoutBtn");

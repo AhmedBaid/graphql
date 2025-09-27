@@ -5,6 +5,9 @@
     box-sizing: border-box;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
 
 a {
     text-decoration: none;
@@ -37,7 +40,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #0a0a0a5b;
+    background-color: black;
     box-shadow: 0px 1px 2px #00ff26;
     padding: 10px 100px;
     z-index: 1000;
@@ -63,10 +66,8 @@ body {
 .firstLast {
     background: linear-gradient(90deg, #28d383, #00ff26);
     -webkit-background-clip: text;
-    /* Safari/Chrome */
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    /* Standard */
     color: transparent;
     font-size: 24px;
     font-weight: bold;
@@ -279,6 +280,7 @@ select:focus {
     display: flex;
     flex-direction: column;
 }
+
 .skills h2 {
     width: fit-content;
     font-size: 22px;
@@ -287,6 +289,7 @@ select:focus {
     color: #04E17A;
     margin-bottom: 10px;
 }
+
 .skills .container-svg {
     color: white;
     width: 100%;
@@ -302,9 +305,11 @@ select:focus {
     font-weight: bold;
     fill: white;
 }
-#skillsChart{
+
+#skillsChart {
     width: 100%;
 }
+
 .audits {
     width: 100%;
     margin-top: 50px;
@@ -312,6 +317,7 @@ select:focus {
     display: flex;
     flex-direction: column;
 }
+
 .audits h2 {
     width: fit-content;
     font-size: 22px;
@@ -320,15 +326,63 @@ select:focus {
     color: #04E17A;
     margin-bottom: 10px;
 }
+
 .audits .audit-svg {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
     color: white;
     width: 100%;
-    max-height: 350px;
-    overflow: auto;
+    height: 450px;
     background: #1e1e1e;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.audit-svg text {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.audit-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.audit-stats {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    border-radius: 10px;
+    border-top: 2px solid #04E17A;
+    background: #121212;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 150px;
+    height: 120px;
+    color: white;
+}
+
+.audit-stats p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.audit-stats .green {
+    color: #04E17A;
+}
+
+.audit-stats .red {
+    color: #ff4c4c;
+}
+
+.audit-stats:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0px 5px #04E17A;
+    transition: 0.5s;
 }
