@@ -152,43 +152,66 @@ export async function showProfile(token) {
     });
 
   }
-  function draw_AuditSvg() {
+  function draw_AuditSvg(auditData) {
     const div = document.querySelector(".audit-svg");
+
+    const failedCount = auditData.data.user[0].failed.aggregate.count;
+    const successCount = auditData.data.user[0].success.aggregate.count;
+    const total = failedCount + successCount;
+
+    const ratio = auditData.data.user[0].auditRatio.toFixed(2);
+
+    const radius = 100;
+    const circumference = 2 * Math.PI * radius;
+
+    const successPercent = (successCount / total) * 100;
+    const failedPercent = (failedCount / total) * 100;
+
+    const successLength = (successPercent / 100) * circumference;
+    const failedLength = (failedPercent / 100) * circumference;
+
     div.innerHTML = `
     <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="150" cy="150" r="100" fill="none" stroke="#2c2f48" stroke-width="40"/>
+      <!-- الخلفية -->
+      <circle cx="150" cy="150" r="${radius}" fill="none" stroke="#2c2f48" stroke-width="40"/>
       
-      <!-- Success arc (74%) -->
+      <!-- Success arc -->
       <circle
         cx="150"
         cy="150"
-        r="100"
+        r="${radius}"
         fill="none"
         stroke="#4caf50"
         stroke-width="40"
-        stroke-dasharray="465.421, 628.319"
+        stroke-dasharray="${successLength}, ${circumference}"
         stroke-dashoffset="0"
         transform="rotate(-90 150 150)"
       />
       
-      <!-- Failed arc (26%) -->
+      <!-- Failed arc -->
       <circle
         cx="150"
         cy="150"
-        r="100"
+        r="${radius}"
         fill="none"
         stroke="#e74c3c"
         stroke-width="40"
-        stroke-dasharray="162.898, 628.319"
-        stroke-dashoffset="-465.421"
+        stroke-dasharray="${failedLength}, ${circumference}"
+        stroke-dashoffset="-${successLength}"
         transform="rotate(-90 150 150)"
       />
 
-      <text x="150" y="145" text-anchor="middle" fill="white" font-size="22px" font-family="Arial">50 Audits</text>
-
+      <!-- النص فالنص -->
+      <text x="150" y="140" text-anchor="middle" fill="white" font-size="22px" font-family="Arial">
+        ${total} Audits
+      </text>
+      <text x="150" y="170" text-anchor="middle" fill="#04E17A" font-size="16px" font-family="Arial">
+        Ratio: ${ratio}
+      </text>
     </svg>
-    `
+  `;
   }
+
   draw_SkillsSvg();
   draw_AuditSvg();
 
