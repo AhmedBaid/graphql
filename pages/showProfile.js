@@ -8,23 +8,28 @@ import { debounce } from "../helpers/debounce.js";
 export async function showProfile(token) {
   const Profile_data = await FetchGraphqlapi(user_info, token);
   const Project_data = await FetchGraphqlapi(project_list, token);
+  console.log(Project_data);
+
   const skills_data = await FetchGraphqlapi(skills, token);
   const audits_data = await FetchGraphqlapi(audits, token);
-  console.log(audits_data);
 
   const firstName = Profile_data.data.user[0].firstName || "user";
   const lastName = Profile_data.data.user[0].lastName || "user";
   const username = Profile_data.data.user[0].login || "user";
-  console.log(username);
-  
+  const attrs = Profile_data.data.user[0].attrs;
+  // info about user
+  const cin = attrs.cin || "";
+  const tel = attrs.tel || "";
+  const email = attrs.email || "";
+  const gender = attrs.gender || "";
+  const addressCity = attrs.addressCity || "";
   const totalXP = Profile_data.data.xp.aggregate.sum.amount || 0;
   const level = Profile_data.data.level.aggregate.max.amount || 0;
   const cohort = Profile_data.data.user[0].events[0].cohorts[0].labelName || "cohort not found";
-  const completedProjects = Project_data.data.user[0].groups.length || 0;
+  const completedProjects = Project_data.data.transaction.length || 0;
   const list_skills = skills_data.data.user[0].transactions || [];
   const unique_skills = [];
   const seen = new Set();
-  // const accepted
 
   for (const t of list_skills) {
     if (!seen.has(t.skillType)) {
@@ -60,29 +65,34 @@ export async function showProfile(token) {
       </div>
     </div>
     <div class="projects">
-      <h2>Projects Completed (${completedProjects})</h2>
-      <div class="project-table-container">
-        <div class="project-header">
-          <div class="col">Project</div>
-          <div class="col">XP</div>
-          <div class="col">Members</div>
-          <div class="col">Leader</div>
-        </div>
-        <div class="project-body">
-          ${Project_data.data.user[0].groups.map(g => {
-    const projectXP = Project_data.data.xp_view
-      .filter(x => x.path === g.group.path && x.userId === Project_data.data.user[0].id)
-      .reduce((sum, x) => sum + x.amount, 0);
+  <h2>Transactions (${completedProjects})</h2>
+  <div class="project-table-container">
+    <div class="project-header">
+      <div class="col">Project</div>
+      <div class="col">XP</div>
+      <div class="col">Created At</div>
+      <div class="col">Team Members</div>
+      <div class="col">Team Leader</div>
+    </div>
+    <div class="project-body">
+      ${Project_data.data.transaction.map(t => {
+    const projectName = t.object?.name || "Unknown";
+    const xp = formatXP(t.amount || 0);
+    const date = new Date(t.createdAt).toLocaleDateString();
+    const members = t.object.progresses?.[0]?.group?.members || [];
+    const leader = t.object.progresses?.[0]?.group?.captainLogin || "";
+
     return `
-              <div class="project-row">
-                <div class="col">${g.group.path.replace("/oujda/module/", "")}</div>
-                <div class="col">${formatXP(projectXP)}</div>
-                <div class="col">
-                  ${g.group.members.map(m => `<div class="userLogin"><a href="https://profile.zone01oujda.ma/profile/${m.userLogin}">${m.userLogin}</a></div>`).join(" ")}
-                </div>
-                <div class="col">${g.group.captainLogin || "User"}</div>
-              </div>
-            `;
+          <div class="project-row">
+            <div class="col">${projectName}</div>
+            <div class="col" style="color:${t.amount > 0 ? 'green' : 'red'}">${xp}</div>
+            <div class="col">${date}</div>
+            <div class="col members">
+              ${members.map(m => `<div class="userLogin"><a href="https://profile.zone01oujda.ma/profile/${m.userLogin}">${m.userLogin}</a></div>`).join(" ")}
+            </div>
+            <div class="col">${leader}</div>
+          </div>
+        `;
   }).join("")}
         </div>
       </div>
@@ -100,6 +110,35 @@ export async function showProfile(token) {
       </div>
     </div>
   `;
+  const profilePic = document.querySelector(".profile-pic");
+  console.log(profilePic);
+
+  profilePic.addEventListener("click", () => {
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+
+    overlay.innerHTML = `
+    <div class="info-popup">
+      <img src="${profilePic.src}" alt="Profile Picture"/>
+      <h2>Hi ${firstName} ${lastName}</h2>
+      <p><strong>Username :</strong> ${username}</p>
+      <p><strong>CIN :</strong> ${cin}</p>
+      <p><strong>Phone Number :</strong> ${tel}</p>
+      <p><strong>Gender :</strong> ${gender}</p>
+      <p><strong>Email :</strong> ${email}</p>
+      <p><strong>Address :</strong> ${addressCity}</p>
+    </div>
+  `;
+
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) {
+        overlay.remove();
+      }
+    });
+  });
+
   function draw_SkillsSvg() {
     const svgContainer = document.querySelector(".container-svg");
     const svg = document.getElementById("skillsChart");
@@ -111,17 +150,15 @@ export async function showProfile(token) {
 
     svg.setAttribute("height", unique_skills.length * (barHeight + spacing) + 30);
 
-    const maxAmount = Math.max(...unique_skills.map(s => s.skillAmount || 1));
-
     unique_skills.forEach((skill, i) => {
       const y = i * (barHeight + spacing) + 30;
       const amount = skill.skillAmount || 0;
 
       const leftPadding = 120;
       const rightPadding = 50;
-      const availableWidth = containerWidth - leftPadding - rightPadding - 200;
+      const availableWidth = containerWidth - leftPadding - rightPadding;
 
-      const barWidth = (amount / maxAmount) * availableWidth;
+      const barWidth = (amount / 100) * availableWidth;
 
       const name = document.createElementNS("http://www.w3.org/2000/svg", "text");
       name.setAttribute("x", "10");
@@ -132,7 +169,7 @@ export async function showProfile(token) {
       const bgBar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
       bgBar.setAttribute("x", leftPadding);
       bgBar.setAttribute("y", y);
-      bgBar.setAttribute("width", availableWidth + 200);
+      bgBar.setAttribute("width", availableWidth);
       bgBar.setAttribute("height", barHeight);
       bgBar.setAttribute("fill", "#333");
       bgBar.setAttribute("rx", "8");
@@ -150,7 +187,7 @@ export async function showProfile(token) {
       svg.appendChild(progress);
 
       const value = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      value.setAttribute("x", availableWidth + 350);
+      value.setAttribute("x", availableWidth + 140);
       value.setAttribute("y", y + barHeight / 2);
       value.setAttribute("dominant-baseline", "middle");
       value.textContent = `${amount}%`;
@@ -166,6 +203,8 @@ export async function showProfile(token) {
     const total = failedCount + successCount;
     const totalUp = audits_data.data.user[0].totalUp;
     const totalDown = audits_data.data.user[0].totalDown;
+    console.log(totalUp, totalDown);
+
 
 
     const ratio = audits_data.data.user[0].auditRatio.toFixed(2);
@@ -223,7 +262,7 @@ export async function showProfile(token) {
     <div class="audit-details">
       <div class="audit-stats">
         <p>${formatXP(totalUp)}</p>
-        <h3>Total up</h3>
+        <h3>Total up212</h3>
       </div>
       <div class="audit-stats">
         <p>${formatXP(totalDown)}</p>

@@ -4,6 +4,7 @@ export const user_info = `
     login
     firstName
     lastName
+    attrs
     events(where: {cohorts: {labelName: {_is_null: false}}}) {
         cohorts {
         labelName
@@ -33,22 +34,23 @@ export const user_info = `
 
 export const project_list = `
 {
-  user {
-    groups(where: {group: {status: {_eq: finished}, _and: {eventId: {_eq: 41}}}}
-    order_by:{createdAt:asc}
-    ) {
-      group {
-        captainLogin
-        path
-        members (where: { accepted: { _eq: true } })  {
-          userLogin
+  transaction(
+    where: {type: {_eq: "xp"}, eventId: {_eq: 41}, path: {_nilike: "%checkpoint%"}}
+    order_by: {createdAt: desc}
+  ) {
+    amount
+    createdAt
+    object {
+      progresses {
+        group {
+          captainLogin
+          members(where: {accepted: {_eq: true}}) {
+            userLogin
+          }
         }
       }
+      name
     }
-  }
-  xp_view {
-    amount
-    path
   }
 }`
 
