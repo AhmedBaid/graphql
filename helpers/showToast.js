@@ -1,5 +1,5 @@
 import { errorDiv } from "../config/config.js";
-
+// show notification message
 export function showToast(color, message) {
     errorDiv.style.display = "block"
     errorDiv.style.backgroundColor = color

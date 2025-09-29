@@ -5,10 +5,10 @@ import { getRank } from "../helpers/GetRank.js";
 import { formatXP } from "../helpers/FormatXp.js";
 import { debounce } from "../helpers/debounce.js";
 
+// display user profile
 export async function showProfile(token) {
   const Profile_data = await FetchGraphqlapi(user_info, token);
   const Project_data = await FetchGraphqlapi(project_list, token);
-  console.log(Project_data);
 
   const skills_data = await FetchGraphqlapi(skills, token);
   const audits_data = await FetchGraphqlapi(audits, token);
@@ -30,7 +30,7 @@ export async function showProfile(token) {
   const list_skills = skills_data.data.user[0].transactions || [];
   const unique_skills = [];
   const seen = new Set();
-
+  // remove duplicate skills
   for (const t of list_skills) {
     if (!seen.has(t.skillType)) {
       unique_skills.push(t);
@@ -110,6 +110,7 @@ export async function showProfile(token) {
       </div>
     </div>
   `;
+  // handle profile pic error and write the default pic
   const profilePic = document.querySelector(".profile-pic");
   profilePic.onerror = () => {
     profilePic.src = "../assets/images/profile.jpg";
@@ -140,7 +141,7 @@ export async function showProfile(token) {
       }
     });
   });
-
+  // draw skills chart
   function draw_SkillsSvg() {
     const svgContainer = document.querySelector(".container-svg");
     const svg = document.getElementById("skillsChart");
@@ -197,6 +198,7 @@ export async function showProfile(token) {
     });
 
   }
+  // draw audit chart
   function draw_AuditSvg() {
     const div = document.querySelector(".audit-svg");
 
@@ -280,7 +282,7 @@ export async function showProfile(token) {
 
   draw_SkillsSvg();
   draw_AuditSvg();
-
+  // redraw skills chart on window resize
   window.addEventListener("resize", debounce(() => {
     const svg = document.getElementById("skillsChart");
     while (svg.firstChild) {
