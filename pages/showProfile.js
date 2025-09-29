@@ -207,7 +207,6 @@ export async function showProfile(token) {
     const total = failedCount + successCount;
     const totalUp = audits_data.data.user[0].totalUp;
     const totalDown = audits_data.data.user[0].totalDown;
-    console.log(totalUp, totalDown);
 
 
 
@@ -225,8 +224,6 @@ export async function showProfile(token) {
     div.innerHTML = `
     <div class="combined-chart">
       <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="150" cy="150" r="${radius}" fill="none" stroke="#2c2f48" stroke-width="40"/>
-        
         <circle
           cx="150"
           cy="150"
