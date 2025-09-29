@@ -165,7 +165,7 @@ export async function showProfile(token) {
 
       const name = document.createElementNS("http://www.w3.org/2000/svg", "text");
       name.setAttribute("x", "10");
-      name.setAttribute("y", y + barHeight);
+      name.setAttribute("y", y + barHeight / 1.5);
       name.textContent = skill.skillType.replace("skill_", "");
       svg.appendChild(name);
 
@@ -191,7 +191,7 @@ export async function showProfile(token) {
 
       const value = document.createElementNS("http://www.w3.org/2000/svg", "text");
       value.setAttribute("x", availableWidth + 140);
-      value.setAttribute("y", y + barHeight / 2);
+      value.setAttribute("y", y + barHeight / 1.5);
       value.setAttribute("dominant-baseline", "middle");
       value.textContent = `${amount}%`;
       svg.appendChild(value);
