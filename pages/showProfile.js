@@ -144,7 +144,7 @@ export async function showProfile(token) {
   function draw_SkillsSvg() {
     const svgContainer = document.querySelector(".container-svg");
     const svg = document.getElementById("skillsChart");
-    const containerWidth = svgContainer.clientWidth - 50;
+    const containerWidth = svgContainer.clientWidth - 100;
 
     const barHeight = 20;
     const spacing = 20;

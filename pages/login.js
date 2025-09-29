@@ -13,7 +13,7 @@ export async function login() {
         const password = document.getElementById("password").value;
 
         if (!username || !password) {
-            return showToast("green", "Please fill all fields");
+            return showToast("red", "Please fill all fields");
         }
 
         const credentials = btoa(`${username}:${password}`);

@@ -13,6 +13,8 @@ export function getRank(level) {
   } else if (level >= 50 && level < 55) {
     return "Junior developer";
   } else if (level >= 55 && level < 60) {
+    return "Confirmed developer";
+  } else if (level == 60) {
     return "Full-Stack developer";
   } else {
     return "";
