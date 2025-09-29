@@ -1,49 +1,59 @@
-# graphql
+# GraphQL 
 
+This project is a **GraphQL-based web dashboard** built with vanilla **JavaScript, HTML, and CSS**.  
+It allows users to authenticate, fetch data via GraphQL queries, and display profile information, XP, ranks, and more in a styled UI.
 
-  function draw_AuditSvg() {
-    const div = document.querySelector(".audit-svg");
-    div.innerHTML = `
-    <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="150" cy="150" r="100" fill="none" stroke="#2c2f48" stroke-width="40"/>
-      
-      <!-- Success arc (74%) -->
-      <circle
-        cx="150"
-        cy="150"
-        r="100"
-        fill="none"
-        stroke="#4caf50"
-        stroke-width="40"
-        stroke-dasharray="465.421, 628.319"
-        stroke-dashoffset="0"
-        transform="rotate(-90 150 150)"
-      />
-      
-      <!-- Failed arc (26%) -->
-      <circle
-        cx="150"
-        cy="150"
-        r="100"
-        fill="none"
-        stroke="#e74c3c"
-        stroke-width="40"
-        stroke-dasharray="162.898, 628.319"
-        stroke-dashoffset="-465.421"
-        transform="rotate(-90 150 150)"
-      />
+---
 
-      <text x="150" y="145" text-anchor="middle" fill="white" font-size="22px" font-family="Arial">50 Audits</text>
+## 📂 Project Structure
+```
+GRAPHQL/
+├── assets/               # Static frontend assets
+│   ├── css/
+│   │   ├── style.css     # Main styles
+│   │   └── responsive.css# Media queries & responsive design
+│   └── images/
+│       ├── icon.png      # App favicon / icon
+│       └── profile.jpg   # Default profile picture
+│
+├── config/
+│   └── config.js         # API configuration (GraphQL endpoint, constants, tokens, etc.)
+│
+├── helpers/              # Utility functions
+│   ├── debounce.js       # Debounce function for performance
+│   ├── FetchApi.js       # Wrapper for GraphQL fetch calls
+│   ├── FormatXp.js       # Converts raw XP values into readable format
+│   ├── GetRank.js        # Gets user rank from data
+│   └── showToast.js      # Toast notification system
+│
+├── pages/                # Page-specific logic
+│   ├── login.js          # Handles user login/authentication
+│   └── showProfile.js    # Displays user profile and related data
+│
+├── query/
+│   └── query.js          # Contains GraphQL queries used in the app
+│
+├── index.html            # Main entry point (frontend UI)
+├── main.js               # Application bootstrap (initialization, event listeners, etc.)
+└── README.md             # Project documentation (this file)
 
-    </svg>
-    `
-  }
+```
 
+---
 
+## ⚙️ Features
+- 🔑 **Authentication** using tokens (GraphQL `Bearer` authorization).
+- 📊 **Profile Dashboard** with user details (XP, rank, transactions, skills, audits, etc.).
+- 🖼️ **Dynamic UI Rendering** with DOM manipulation.
+- 📡 **Reusable GraphQL Fetch API** helper for queries.
+- 🎨 **Responsive Design** with `responsive.css`.
+- 🔔 **Toast Notifications** for feedback (success/error).
 
+---
 
+## 🚀 Getting Started
 
-  const audits_data = await FetchGraphqlapi(audits, token);
-  console.log(audits_data);
-
-in the picture you can see the data and i want you to put them on the svg please to be dynamique as data
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/AhmedBaid/graphql
+   install live server extention and go live 
