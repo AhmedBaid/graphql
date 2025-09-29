@@ -88,7 +88,7 @@ export async function showProfile(token) {
                 <div class="col" style="color:${t.amount > 0 ? '#00FF00' : '#FF0000'}">${xp}</div>
                 <div class="col">${date}</div>
                 <div class="col members">
-                  ${members.map(m => `<div class="userLogin"><a href="https://profile.zone01oujda.ma/profile/${m.userLogin}">${m.userLogin}</a></div>`).join(" ")}
+                  ${members.map(m => `<div class="userLogin"><a href="https://profile.zone01oujda.ma/profile/${m.userLogin}" target="_blank">${m.userLogin}</a></div>`).join(" ")}
                 </div>
                 <div class="col">${leader}</div>
               </div>
@@ -144,7 +144,7 @@ export async function showProfile(token) {
   function draw_SkillsSvg() {
     const svgContainer = document.querySelector(".container-svg");
     const svg = document.getElementById("skillsChart");
-    const containerWidth = svgContainer.clientWidth - 50;
+    const containerWidth = svgContainer.clientWidth - 70;
 
     const barHeight = 20;
     const spacing = 20;
@@ -223,10 +223,8 @@ export async function showProfile(token) {
     div.innerHTML = `
     <div class="combined-chart">
       <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-        <!-- الخلفية -->
         <circle cx="150" cy="150" r="${radius}" fill="none" stroke="#2c2f48" stroke-width="40"/>
         
-        <!-- Success arc -->
         <circle
           cx="150"
           cy="150"
@@ -239,7 +237,6 @@ export async function showProfile(token) {
           transform="rotate(-90 150 150)"
         />
         
-        <!-- Failed arc -->
         <circle
           cx="150"
           cy="150"
@@ -252,7 +249,6 @@ export async function showProfile(token) {
           transform="rotate(-90 150 150)"
         />
 
-        <!-- النص فالنص -->
         <text x="150" y="140" text-anchor="middle" fill="white" >
           ${total} Audits
         </text>
