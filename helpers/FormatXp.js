@@ -1,9 +1,13 @@
 export function formatXP(xp) {
-  if (!xp) return "0 kb";
+  let absoluteXp = Math.abs(xp);
+  let isnegative = xp < 0;
+  let formattedXp;
 
-  if (xp.toString().length <= 6) {
-    return `${(xp / 1000).toFixed(2)} KB`;
+  if (absoluteXp < 1000000) {
+    formattedXp = `${(absoluteXp / 1000).toFixed(1)} KB`;
   } else {
-    return `${(xp / 1000000).toFixed(2)} MB`;
+    formattedXp = `${(absoluteXp / 1000000).toFixed(1)} MB`;
   }
+
+  return isnegative ? `-${formattedXp}` : formattedXp;
 }

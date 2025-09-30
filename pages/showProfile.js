@@ -157,8 +157,8 @@ export async function showProfile(token) {
       const y = i * (barHeight + spacing) + 30;
       const amount = skill.skillAmount || 0;
 
-      const leftPadding = 120;
-      const rightPadding = 50;
+      const leftPadding = 100;
+      const rightPadding = 20;
       const availableWidth = containerWidth - leftPadding - rightPadding;
 
       const barWidth = (amount / 100) * availableWidth;
@@ -190,7 +190,7 @@ export async function showProfile(token) {
       svg.appendChild(progress);
 
       const value = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      value.setAttribute("x", availableWidth + 140);
+      value.setAttribute("x", availableWidth + 120);
       value.setAttribute("y", y + barHeight / 1.5);
       value.setAttribute("dominant-baseline", "middle");
       value.textContent = `${amount}%`;
