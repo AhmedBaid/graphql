@@ -1,4 +1,4 @@
-# GraphQL Dashboard
+# GraphQL 
 
 This project is a **GraphQL-based web dashboard** built with vanilla **JavaScript, HTML, and CSS**.  
 It allows users to authenticate, fetch data via GraphQL queries, and display profile information, XP, ranks, and more in a styled UI.
