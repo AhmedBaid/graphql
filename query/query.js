@@ -1,6 +1,7 @@
 export const user_info = `
 {
     user {
+    avatarUrl
     login
     firstName
     lastName

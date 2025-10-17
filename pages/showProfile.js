@@ -16,6 +16,7 @@ export async function showProfile(token) {
   const firstName = Profile_data.data.user[0].firstName || "user";
   const lastName = Profile_data.data.user[0].lastName || "user";
   const username = Profile_data.data.user[0].login || "user";
+  const avatar = Profile_data.data.user[0].avatarUrl || "";
   const attrs = Profile_data.data.user[0].attrs;
   // info about user
   const cin = attrs.cin || "";
@@ -43,7 +44,7 @@ export async function showProfile(token) {
       <h1 class="logo">Welcome, <span class="firstLast">${firstName} ${lastName}</span></h1>
       <div class="profile-actions">
         <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
-        <img src="https://discord.zone01oujda.ma/assets/pictures/${username}.jpg" alt="profile pic" class="profile-pic"/>
+        <img src=${avatar} alt="profile pic" class="profile-pic"/>
       </div>
     </div>
     <div class="stats">
