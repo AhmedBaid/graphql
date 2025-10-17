@@ -44,7 +44,7 @@ export async function showProfile(token) {
       <h1 class="logo">Welcome, <span class="firstLast">${firstName} ${lastName}</span></h1>
       <div class="profile-actions">
         <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
-        <img src=${avatar ? avatar : "../assets/images/profile.jpg"} alt="profile pic" class="profile-pic"/>
+        <img src=${avatar ? avatar:""} alt="profile pic" class="profile-pic"/>
       </div>
     </div>
     <div class="stats">
@@ -111,6 +111,7 @@ export async function showProfile(token) {
       </div>
     </div>
   `;
+  const profilePic = document.querySelector(".profile-pic");
 
   profilePic.addEventListener("click", () => {
     const overlay = document.createElement("div");
